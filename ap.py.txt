@@ -1,0 +1,49 @@
+from flask import Flask, render_template, request, redirect, url_for, session
+
+app = Flask(__name__)
+app.secret_key = 'your_secret_key'
+
+# Initialize session data
+@app.before_request
+def make_session_permanent():
+    session.permanent = True
+
+@app.route('/')
+def index():
+    return redirect(url_for('step1'))
+
+@app.route('/step1', methods=['GET', 'POST'])
+def step1():
+    if request.method == 'POST':
+        session['step1_complete'] = True
+        return redirect(url_for('step2'))
+    return render_template('step1.html')
+
+@app.route('/step2', methods=['GET', 'POST'])
+def step2():
+    if not session.get('step1_complete'):
+        return redirect(url_for('step1'))
+    
+    if request.method == 'POST':
+        session['step2_complete'] = True
+        return redirect(url_for('step3'))
+    return render_template('step2.html')
+
+@app.route('/step3', methods=['GET', 'POST'])
+def step3():
+    if not session.get('step2_complete'):
+        return redirect(url_for('step2'))
+
+    if request.method == 'POST':
+        session['step3_complete'] = True
+        return redirect(url_for('complete'))
+    return render_template('step3.html')
+
+@app.route('/complete')
+def complete():
+    if not session.get('step3_complete'):
+        return redirect(url_for('step3'))
+    return render_template('complete.html')
+
+if __name__ == "__main__":
+    app.run(debug=True)
