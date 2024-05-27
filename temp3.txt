@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Step 3</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h2>Step 3</h2>
+        <form method="POST">
+            <label for="info3">Information for Step 3:</label>
+            <input type="text" id="info3" name="info3" required><br>
+            <button type="submit">Complete</button>
+        </form>
+    </div>
+</body>
+</html>
